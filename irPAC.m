@@ -1,8 +1,7 @@
-function []=irPAC(Fs, time, LE,RE,t1, t2)
+function []=irPAC(Fs, time_ms, LE,RE,t1, t2)
 
 Left=LE;
 Right=RE;
-time_ms=time;
 
 
 % t1 = 1; 

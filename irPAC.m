@@ -1,17 +1,12 @@
-function []=irPAC(Fs, time_ms, LE,RE,t1, t2)
+function []=irPAC(Fs, time_ms, LP_Signal_fix,t1, t2, e1, e2)
 
-Left=LE;
-Right=RE;
+Left=LP_Signal_fix(:, e1);
+Right=LP_Signal_fix(:, e2);
 
-
-% t1 = 1; 
-% t2 = 500000; 
-
-a=1200000;
 time_ms_lim= time_ms(t1:t2,:);
 
-Left_lim= Left(t1+a:t2+a, :);
-Right_lim= Right(t1+a:t2+a, :);
+Left_lim= Left(t1:t2, :);
+Right_lim= Right(t1:t2, :);
 
 
 [wt_left,f_left] = cwt(Left_lim,Fs);
@@ -62,7 +57,7 @@ theta_phase_right =angle(hi_right_theta);
 gamma_phase_right =angle(hi_right_gamma);
 
 phase_theta = linspace(0,360,360);
-phase=deg2rad(phase_theta)
+phase=deg2rad(phase_theta);
 
 nBins=18;
 
@@ -85,6 +80,18 @@ nBins=18;
 [MI_deltaR_thetaL,distKL_deltaR_thetaL, amplP_deltaR_thetaL, binCenters_deltaR_thetaL]=modulationIndex(delta_phase_right,env_theta_left,nBins);
 [MI_deltaL_thetaR,distKL_deltaL_thetaR, amplP_deltaL_thetaR, binCenters_deltaL_thetaR]=modulationIndex(delta_phase_left,env_theta_right,nBins);
 
+  fig1 = figure;
+    fig1.PaperUnits      = 'centimeters';
+    fig1.Units           = 'centimeters';
+    fig1.Color           = 'w';
+    fig1.InvertHardcopy  = 'off';
+    fig1.Name            = [num2str(e1), 'vs', num2str(e2),' Local Phase-amplitude coupling'];
+    fig1.DockControls    = 'on';
+    fig1.WindowStyle    = 'docked';
+    fig1.NumberTitle     = 'off';
+    set(fig1,'defaultAxesXColor','k');
+    figure(fig1);
+    
 subplot(331)
 bar([rad2deg(binCenters_deltaR_gammaR)+200 rad2deg(binCenters_deltaR_gammaR+2*pi)+200],[amplP_deltaR_gammaR amplP_deltaR_gammaR], 'r');
 title('Lcal PAC');

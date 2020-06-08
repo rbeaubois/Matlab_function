@@ -91,9 +91,5 @@ title('Local PAC (gamma phase/gamma amp)');
 ylabel('Moduation Index');
 
 disp("Modulatio Index");
-disp(MI_delta_gamma);
-disp(MI_theta_gamma);
-disp(MI_delta_theta);
-disp(MI_delta_delta);
-disp(MI_theta_theta);
-disp(MI_gamma_gamma);
+disp([MI_delta_gamma MI_theta_gamma MI_delta_theta]);
+disp([MI_delta_delta MI_theta_theta MI_gamma_gamma]);

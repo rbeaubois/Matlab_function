@@ -1,6 +1,4 @@
-function [Avalanches_probability]=neuronal_avalanches(All_spikes, def_avalanch_ms)
-
-def_avalanch_ms=2;
+function [x, Avalanches_probability]=neuronal_avalanches(All_spikes, def_avalanch_ms)
 
 Merged_All_spikes=sort(cell2mat(All_spikes));
 Merged_All_spikes_ms=Merged_All_spikes*1000;

@@ -1,6 +1,8 @@
 function [x, Avalanches_probability]=neuronal_avalanches(All_spikes, def_avalanch_ms)
 
-Merged_All_spikes=sort(cell2mat(All_spikes));
+All_spikes_rep1=All_spikes;
+All_spikes_rep1(:, 2)=[];
+Merged_All_spikes=sort(cell2mat(All_spikes_rep1));
 Merged_All_spikes_ms=Merged_All_spikes*1000;
 Merged_All_spikes_number=length(Merged_All_spikes_ms);
 D=diff(Merged_All_spikes_ms);
@@ -14,7 +16,7 @@ fig1.Name            = 'Neuronal avalanches overview'
 fig1.NumberTitle     = 'off'
 fig1.DockControls    = 'on';
 fig1.WindowStyle    = 'docked';
-A=D>def_avalanch_ms;
+A=D<def_avalanch_ms;
 subplot(411)
 plot(Merged_All_spikes_ms);
 subplot(412)
@@ -31,7 +33,7 @@ t=1;
 con=1;
 clear avalanch;
 
-for i=1:Merged_All_spikes_number-1;
+for i=1:Merged_All_spikes_number-1
     
     if A(i)==0
      avalanch(:, t)= con-1;
@@ -86,5 +88,5 @@ plot(x, Avalanches_probability,'o');
 edges = logspace(0,2 ,10);
 set(gca,'XScale','log')
 set(gca,'YScale','log')
-xlim([1 100])
+xlim([1 1000])
 

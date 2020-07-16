@@ -1,4 +1,4 @@
-function [burst_locs, burst_spikes, All_interburst_interval_sec, Mean_burst_frequency]=burst_detection(Fs, time_ms, num_electrode, LP_Signal_fix, HP_Signal_fix, All_spikes, bin_win, burst_th)
+function [burst_locs, burst_spikes, All_interburst_interval_sec, Mean_burst_frequency, dev_interburst_interval]=burst_detection(Fs, time_ms, num_electrode, LP_Signal_fix, HP_Signal_fix, All_spikes, bin_win, burst_th)
 
 % bin_win= 100;%msec bin_win has to be 100
      
@@ -6,6 +6,8 @@ tl=length(time_ms);
 total_duration=tl/Fs;
 bin_window=total_duration*1000/bin_win;
 Mean_burst_frequency=zeros(num_electrode, 1);
+dev_interburst_interval=zeros(num_electrode, 1);
+% All_interburst_interval_sec=zeros(num_electrode, 1);
 
 for i=1:num_electrode
      fig1 = figure;
@@ -42,9 +44,8 @@ for i=1:num_electrode
     interburst_interval=diff(burst_locs/10);
     All_interburst_interval_sec{i,1}=interburst_interval;
     Mean_burst_frequency(i,1)=1/mean(interburst_interval);
+    dev_interburst_interval(i,1)=std(interburst_interval);
 end
-
-
 
 
 end

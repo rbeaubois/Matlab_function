@@ -39,8 +39,10 @@ for i=1:num_electrode
     Neg_all_spikes{i,2}=negspks;
     
     temp_locs=sort(vertcat(poslocs, neglocs));
+    num_locs=length(temp_locs);
+    dummy_mat= ones(num_locs,1);
     All_spikes{i,1}=temp_locs;
-
+    All_spikes{i,2}=dummy_mat*i;
     
     All_interspike_interval_sec{i,1}=interspike_interval;
     interspike_interval_sec_avg(i,1)=mean(interspike_interval);

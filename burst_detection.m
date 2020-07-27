@@ -1,4 +1,4 @@
-function [burst_locs, burst_spikes, All_interburst_interval_sec, Mean_burst_frequency, dev_interburst_interval]=burst_detection(Fs, time_ms, num_electrode, LP_Signal_fix, HP_Signal_fix, All_spikes, bin_win, burst_th)
+function [burst_locs, burst_spikes, All_interburst_interval_sec, Mean_burst_frequency, dev_interburst_interval, inter_burst_interval_CV]=burst_detection(Fs, time_ms, num_electrode, LP_Signal_fix, HP_Signal_fix, All_spikes, bin_win, burst_th)
 
 % bin_win= 100;%msec bin_win has to be 100
      
@@ -45,6 +45,7 @@ for i=1:num_electrode
     All_interburst_interval_sec{i,1}=interburst_interval;
     Mean_burst_frequency(i,1)=1/mean(interburst_interval);
     dev_interburst_interval(i,1)=std(interburst_interval);
+    inter_burst_interval_CV(i,1)=nanstd(interburst_interval)/nanmean(interburst_interval);
 end
 
 

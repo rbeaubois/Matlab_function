@@ -30,7 +30,7 @@ fig1.Name            = 'Indexed Neuronal avalanches overview';
 fig1.NumberTitle     = 'off';
 fig1.DockControls    = 'on';
 fig1.WindowStyle    = 'docked';
-def_avalanch_ms=1;
+
 A=D<def_avalanch_ms;
 subplot(411)
 plot(Merged_All_spikes_ms);
@@ -49,17 +49,44 @@ xlim([0 length(A)])
 subplot(414)
 
 
-con=1;
-clear avalanche;
 
+clear avalanche;
+%for i=2:Merged_All_spikes_number-1
+
+con=1;
+av_num_count=0;
+t=1;
 for i=2:Merged_All_spikes_number-1
     
     if A(i)==1
-     con=con+1;
+        
+        if A(i-1)==0
+            av_num_count=av_num_count+1;
+            con=con+1;
+            temp_av(t, :)=+idx(i, :);
+            t=t+1;
+        else
+            con=con+1;
+            temp_av(t, :)=+idx(i, :);
+             t=t+1;
 
+        end
+        
     else
-     avalanche(1, i-1)= con-1;
-     con=1;
+        if  A(i-1)==1
+                avalanche(1, i-1)= con-1;
+                con=1;
+                t=1;
+                All_avalanche{av_num_count, :}=temp_av;
+                clearvars temp_av;
+        else
+            avalanche(1, i-1)= con-1;
+             con=1;
+             t=1;
+             clearvars temp_av;
+        end
+
+
     end
     
 end
@@ -78,7 +105,7 @@ k2 = find(Cal);
 tt=tet(:, k2);
 
 Stt = sparse(tt) ;
-%Merged=horzcat(D, A, avalanche_rot, idx, Cal);
+Merged=horzcat(D, A, avalanche_rot, idx, Cal);
 
 fig1 = figure;
 fig1.PaperUnits      = 'centimeters';
@@ -90,7 +117,7 @@ fig1.NumberTitle     = 'off';
 fig1.DockControls    = 'on';
 fig1.WindowStyle    = 'docked';
 
-cspy(Stt, 'colormap', 'autumn');%S
+cspy(Stt, 'colormap', 'jet');%S
 xlim([1 1000])
 ylim([1 1000])
 

@@ -39,7 +39,7 @@ for i=1:num_electrode
     plot(burst_locs, burst_spikes, 'o');
     hold off
     
-    xlim([0 1000])
+    xlim([0 100000/bin_win])
     
     interburst_interval=diff(burst_locs/10);
     All_interburst_interval_sec{i,1}=interburst_interval;

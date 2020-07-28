@@ -1,4 +1,4 @@
-function [x, Avalanches_probability, avalanche, A, idx]=indexed_neuronal_avalanches(All_spikes, def_avalanch_ms)
+function [x, Avalanches_probability, avalanche, A, idx]=indexed_neuronal_avalanches(All_spikes, def_avalanch_ms, num_electrode, time_ms, HP_Signal_fix)
 All_spikes_rep1=All_spikes;
 All_spikes_rep2=All_spikes;
 All_spikes_rep1(:, 2)=[];
@@ -51,8 +51,6 @@ subplot(414)
 
 
 clear avalanche;
-%for i=2:Merged_All_spikes_number-1
-
 con=1;
 av_num_count=0;
 t=1;
@@ -93,6 +91,7 @@ end
 avalanche(1, length(A))=0;
 
 plot(avalanche);
+
 xlim([0 length(avalanche)])
 avalanche_rot=rot90(avalanche, 3);
 
@@ -105,7 +104,54 @@ k2 = find(Cal);
 tt=tet(:, k2);
 
 Stt = sparse(tt) ;
-Merged=horzcat(D, A, avalanche_rot, idx, Cal);
+spikes_location=sorted_merged_All_spikes_index;
+spikes_location(length(spikes_location), :)=[];
+sLocation=spikes_location(:, 1);
+Merged=horzcat(D, A, avalanche_rot, idx, Cal, sLocation);
+
+
+% 
+% a=sorted_merged_All_spikes_index_rep1(sorted_merged_All_spikes_index_rep1(:, 2)==1,1);
+% ax=ones(length(a), 1);
+% b=sorted_merged_All_spikes_index_rep1(sorted_merged_All_spikes_index_rep1(:, 2)==2,1);
+% bx=ones(length(b), 1);
+
+fig1 = figure;
+fig1.PaperUnits      = 'centimeters';
+fig1.Units           = 'centimeters';
+fig1.Color           = 'w';
+fig1.InvertHardcopy  = 'off';
+fig1.Name            = 'Spikes_indexed location';
+fig1.NumberTitle     = 'off';
+fig1.DockControls    = 'on';
+fig1.WindowStyle    = 'docked';
+
+subplot(211)
+for k=1:num_electrode
+    hold on
+    plot(time_ms/1000, HP_Signal_fix(:, k));
+    xlim([min(sLocation) max(sLocation)]) 
+end
+hold off
+
+subplot(212)
+
+hold on
+plot(sLocation, avalanche_rot, '.');
+ plot(sLocation, idx, '.');
+hold off
+ xlim([min(sLocation) max(sLocation)]) 
+
+set(gca,'YScale','log')
+
+
+ plot(sLocation, idx, '.');
+  plot(sLocation, Cal, '.');
+ plot(sLocation, avalanche_rot, '.');
+
+% hold on
+% plot(a, ax, '.', 'Color', 'blue');
+% plot(b, bx, '.', 'Color', 'red');
 
 fig1 = figure;
 fig1.PaperUnits      = 'centimeters';
@@ -118,6 +164,7 @@ fig1.DockControls    = 'on';
 fig1.WindowStyle    = 'docked';
 
 cspy(Stt, 'colormap', 'jet');%S
+
 xlim([1 1000])
 ylim([1 1000])
 

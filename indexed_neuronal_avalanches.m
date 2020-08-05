@@ -75,8 +75,11 @@ for i=2:Merged_All_spikes_number-1
                 avalanche(1, i-1)= con-1;
                 con=1;
                 t=1;
+                 if  av_num_count==0
+                 else
                 All_avalanche{av_num_count, :}=temp_av;
                 clearvars temp_av;
+                 end
         else
             avalanche(1, i-1)= con-1;
              con=1;

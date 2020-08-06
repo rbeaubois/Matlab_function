@@ -1,3 +1,6 @@
 # Ignore data files in repo
 *.hdr
 *.bin
+*.asv
+*.fig
+*.jpg

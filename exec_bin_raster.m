@@ -1,15 +1,9 @@
-function exec_bin_raster(num_electrode, measurement_duration_min)
+function exec_bin_raster(bin_fpath, num_electrode, rec_duration_secs, save_path, save_data, save_fig)
 
-%% Get binary file and parameters through hdr file
-% Select binary file
-    [bin_file, bin_dir] = uigetfile('*.bin');       % Select binary file
-    bin_fpath = sprintf("%s%s",bin_dir,bin_file);   % File path
-    fprintf(sprintf("[Loading] : %s", bin_file));   % Display file selected
-    
 % Get parameters from hdr files
-    [~, fname_no_ext, ~] = fileparts(bin_fpath);
+    [bin_dir, fname_no_ext, ~] = fileparts(bin_fpath);
     hdr_dir             = bin_dir;   % .hdr and .bin files in same directory
-    hdr_fpath           = sprintf("%s%s.hdr", hdr_dir, fname_no_ext);
+    hdr_fpath           = sprintf("%s%s%s.hdr", hdr_dir, filesep, fname_no_ext);
 
     hdr_fid             = fopen(hdr_fpath);
     file_format         = sscanf(fgetl(hdr_fid), "File Format Version, %d");
@@ -25,9 +19,10 @@ function exec_bin_raster(num_electrode, measurement_duration_min)
     );
     
     fclose(hdr_fid);
-
+    
 % Load signal from binary file
-    measurement_duration_ms                     = measurement_duration_min*60*1000;
+    fprintf(sprintf("[Loading] : %s\n", fname_no_ext));   % Display file selected
+    measurement_duration_ms                     = rec_duration_secs*1000;
     [Signal]                                    = binshort2signal(bin_fpath, measurement_duration_ms, num_electrode, rec_param.conv_f);
     [LP_Signal_fix, HP_Signal_fix, time_ms]     = filter_signal(rec_param.Fs, num_electrode, Signal);
 
@@ -55,7 +50,7 @@ set(fig1,'defaultAxesXColor','k');
 figure(fig1);
 
 [x, y]=plotSpikeRaster(A, 'PlotType','vertline');
-% plot(x, y);
+plot(x, y , '.');
 %% Data
 
 for k=1:num_electrode
@@ -87,11 +82,22 @@ for k=1:num_electrode
     end
 end
 
-save_str=num2str(Signal_comp{j, 2});
-save_str = strtrim(save_str);
-mat='.mat';
-dta='cData_';
-save_str =strcat(dta, save_str, mat);
-save(save_str, 'Data');
+if save_data
+    save_str=num2str(Signal);
+    save_str = strtrim(save_str);
+    mat='.mat';
+    dta='cData_';
+    save_str =strcat(dta, save_str, mat);
+    save(save_str, 'Data');
+end
+
+if save_fig
+    fig_path = sprintf("%s%s%s.fig", save_path, filesep, fname_no_ext);
+    savefig(fig1,fig_path);
+    jpg_path = sprintf("%s%s%s.jpg", save_path, filesep, fname_no_ext);
+    saveas(fig1,jpg_path);
+    close(fig1)
+end
+
 
 end

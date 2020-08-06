@@ -1,26 +1,23 @@
- function [Signal_comp]=init_bin(conversion_index, measurement_duration_min, num_electrode)
-currentFolder = pwd;
-% mkdir Analyzing_data
-MyFolderInfo = dir; 
+function [Signal_comp]=init_bin(conversion_index, measurement_duration_min, num_electrode)
 
-%% bin reading
-list_bin = ls('*.bin');
-bin_file_number=size(list_bin, 1);
+%% Get binary file directory
+fsep                = filesep;      % Get file separator depending on OS
+bin_dir             = uigetdir();   % Select binary file directory
+bin_files           = dir(fullfile(bin_dir, '*.bin')); % Get all binaries files in folder
+nb_bin              = size(bin_files,1); % Get number of binary files in directory
 
-if 1 <= bin_file_number
-     for i=1:bin_file_number
-           disp ('loding');
-           disp (list_bin(i, :));
-           
-          bin_filename=[currentFolder, '\', list_bin(i, :)];
-          measurement_duration_ms=measurement_duration_min*60*1000;
-         [Signal]=binshort2signal(bin_filename,measurement_duration_ms, num_electrode, conversion_index);
-         Signal_comp{i, 1}=Signal;
-         Signal_comp{i, 2}=list_bin(i, :);
-     end
+%% Read binary files
+if nb_bin >= 1
+    for i=1:nb_bin
+        fprintf(sprintf("[Loading] : %s", bin_files(i).name));
+        fpath = sprintf("%s%s%s", bin_files(i).folder, fsep, bin_files(i).name);
+        measurement_duration_ms = measurement_duration_min*60*1000;
+        [Signal] = binshort2signal(fpath,measurement_duration_ms, num_electrode, conversion_index);
+        Signal_comp{i, 1} = Signal;
+        Signal_comp{i, 2} = bin_files(i).name;
+    end
 else
-     
-    disp ('OK')
+    disp ('No .bin files in folder')
 end
 
- end
+end

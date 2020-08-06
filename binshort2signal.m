@@ -1,5 +1,4 @@
 function [Signal]=binshort2signal(bin_filename,measurement_duration_ms, num_electrode, conversion_index)
-
 fileID_bin = fopen(bin_filename);
 measurement_duration_data=measurement_duration_ms*20;
 A = fread(fileID_bin,[num_electrode measurement_duration_data],'short', 'n');

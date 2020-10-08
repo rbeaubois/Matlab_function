@@ -11,14 +11,14 @@ function[Pos_all_spikes, Neg_all_spikes, pos_avg_amp, neg_avg_amp, num_posspks, 
      figure(fig1);
 
  end
- Pos_all_spikes={};
- Neg_all_spikes={};
- All_spikes={};
- pos_avg_amp=zeros(num_electrode, 1);
- neg_avg_amp=zeros(num_electrode, 1);
- interspike_interval_sec_avg=zeros(num_electrode, 1);
- num_posspks=zeros(num_electrode, 1);
- num_negspks=zeros(num_electrode, 1);
+ Pos_all_spikes                 = {};
+ Neg_all_spikes                 = {};
+ All_spikes                     = {};
+ pos_avg_amp                    = zeros(num_electrode, 1);
+ neg_avg_amp                    = zeros(num_electrode, 1);
+ interspike_interval_sec_avg    = zeros(num_electrode, 1);
+ num_posspks                    = zeros(num_electrode, 1);
+ num_negspks                    = zeros(num_electrode, 1);
 
 tic
 for i=1:num_electrode

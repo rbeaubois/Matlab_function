@@ -1,5 +1,8 @@
 function exec_bin(Fs, num_electrode, conversion_index, measurement_duration_min)
 
+% Signal_comp{i, 1} = Signal;
+% Signal_comp{i, 2} = bin_files(i).name;    
+
 [Signal_comp]=init_bin(conversion_index, measurement_duration_min, num_electrode);
 
 sample_number=size(Signal_comp, 1);

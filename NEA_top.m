@@ -1,13 +1,13 @@
 %--------------------------------------------------------
-% Create raster plot from binary file
+% Read binary file with NEA layout
 %   > File has to be one trace
 %
 %--------------------------------------------------------
 
 %% Clear
-clear all
-close all
-clc
+clear all   % Clear all workspace
+close all   % Close all windows
+clc         % Clear command window
 
 %% Get binary files
 binf_get_type = 'one';
@@ -27,10 +27,10 @@ save_param      = struct( ...
 
 % Raster plot of one file
 if strcmp(binf_get_type, 'one')
-    bin_trace_analysis(bin_fpath, trace_time, save_param);
+    exec_bin_raster(bin_fpath, trace_time, save_param);
 % Raster plot of all files
 elseif strcmp(binf_get_type, 'all')
     for i = 1:nb_binf
-        bin_trace_analysis(bin_fpath(i), trace_time, save_param);
+        exec_bin_raster(bin_fpath(i), trace_time, save_param);
     end
 end

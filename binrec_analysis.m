@@ -65,7 +65,7 @@ for i = 1:nb_binf
         All_interburst_interval_sec, Mean_burst_frequency, ...
         Stdev_interburst_interval,inter_burst_interval_CV] ...
         = burst_detection(rec_param.fs, time_ms, rec_param.nb_chan, LP_Signal_fix, HP_Signal_fix,All_spikes, bin_win, burst_th, visual_on);
-    
+
     % Spike Raster plot    A=cell(nb_chan, 1);
 %         for k=1:rec_param.nb_chan
 %             A{k}=rot90(All_spikes{k, 1});
@@ -80,10 +80,16 @@ for i = 1:nb_binf
 %         fig1.WindowStyle    = 'docked';
 %         fig1.NumberTitle     = 'off';
 %         set(fig1,'defaultAxesXColor','k');
-%         figure(fig1);
+% %         figure(fig1);
 % 
 %         [x, y]=plotSpikeRaster(A);
 %         plot(x, y, '.');
+%         
+%         title = sprintf("%s%s%s.fig",save_path, filesep, fname_no_ext);
+%         savefig(fig1,title);
+%         title = sprintf("%s%s%s.jpg",save_path, filesep, fname_no_ext);
+%         saveas(fig1,title);
+%         close all
     
     analysis.All_Interburst_interval(:,i)        = All_interburst_interval_sec;
     analysis.All_Interspike_interval(:,i)        = All_interspike_interval_sec;

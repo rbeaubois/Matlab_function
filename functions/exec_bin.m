@@ -21,6 +21,7 @@ bin_win= 100;%msec
 burst_th=5;
 visual_on=0;
 [burst_locs, burst_spikes, All_interburst_interval_sec, Mean_burst_frequency, Stdev_interburst_interval,  inter_burst_interval_CV]=burst_detection(Fs, time_ms, num_electrode, LP_Signal_fix, HP_Signal_fix,All_spikes, bin_win, burst_th, visual_on);
+
 %% Neuronal avalcnhes (need spike detection first)
 def_avalanch_ms=2;
 [logx, Avalanches_probability, avalanch, AB, idx]=indexed_neuronal_avalanches(All_spikes, def_avalanch_ms, num_electrode, time_ms, HP_Signal_fix);
@@ -42,6 +43,7 @@ set(fig1,'defaultAxesXColor','k');
 figure(fig1);
 
 [x, y]=plotSpikeRaster(A, 'PlotType','vertline');
+plot
 % plot(x, y);
 %% Data
 

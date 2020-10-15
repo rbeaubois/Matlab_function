@@ -80,7 +80,6 @@ for i = 1:nb_binf
 %         fig1.WindowStyle    = 'docked';
 %         fig1.NumberTitle     = 'off';
 %         set(fig1,'defaultAxesXColor','k');
-% %         figure(fig1);
 % 
 %         [x, y]=plotSpikeRaster(A);
 %         plot(x, y, '.');

@@ -75,8 +75,8 @@
 
         [x, y]=plotSpikeRaster(A);
         plot(x, y, '.');
-        
-        if save_param.save_fig
+  
+        if save_param.fig
             title = sprintf("%s%s%s.fig",save_path, filesep, fname_no_ext);
             savefig(fig1,title);
             title = sprintf("%s%s%s.jpg",save_path, filesep, fname_no_ext);

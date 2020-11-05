@@ -44,6 +44,7 @@
         HP_Signal_fix = recording.HP_Signal_fix;
         rec_param = recording.rec_param;
         time_ms = recording.time_ms;
+        clear recording;
 
 %% Analysis in main script
     % Spike detection

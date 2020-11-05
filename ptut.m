@@ -7,8 +7,9 @@
     addpath('functions');   % Add the folder containing functions to path
 
 %% Get binary files
-    binf_get_type = 'one'; % 'one' / 'all' to select either one bin file or all bin in a folder
-    [bin_fpath, nb_binf] = get_bin_files(binf_get_type); % get bin files names and the number of files selected
+    [mat_file, mat_dir] = uigetfile('*.mat','Select mat file to analyze'); % Select mat file
+    mat_fpath           = sprintf("%s%s",mat_dir,mat_file);     % File path
+    [mat_dir, fname_no_ext, ~] = fileparts(mat_fpath);
 
 %% Analysis from binary files
     % File reading parameters
@@ -30,11 +31,19 @@
 %             end
 
     %-- Computation in top script
-        % Read binary file
-            [Signal, fname_no_ext, rec_param]           = read_bin(bin_fpath, trace_time);   % Signals of electrodes + name of file + recording parameters
-
-        % Filter signal
-            [LP_Signal_fix, HP_Signal_fix, time_ms]     = filter_signal(rec_param.fs, rec_param.nb_chan, Signal); % Filtered signal and duration
+%         [Signal, LP_Signal_fix, HP_Signal_fix, rec_param] = load(mat_fpath);
+        recording = load(mat_fpath);
+        % recording.Signal is "raw" signal (filtered by recording device)
+        % recording.LP_Signal_fix is low passed filtered signal
+        % recording.HP_Signal_fix is high passed filtered signal
+        % recording.rec_param is struct of recording parameters
+        % recording.time_s is time vector
+        
+        Signal = recording.Signal;
+        LP_Signal_fix = recording.LP_Signal_fix;
+        HP_Signal_fix = recording.HP_Signal_fix;
+        rec_param = recording.rec_param;
+        time_ms = recording.time_ms;
 
 %% Analysis in main script
     % Spike detection
@@ -91,9 +100,9 @@ plot(Signal(:,1), Signal(:,63)) % Plot signal of electrode 63
 
 nb_row = 8;
 nb_col = 8;
-for i = 2 : rec_param.nb_chan
+for i = 1 : rec_param.nb_chan
     subplot(nb_row, nb_col, i);
-    subplot(Signal(:,1), Signal(:,i));
+    plot(Signal(:,1), Signal(:,i+1));
     % add titles for axis,figure,plot, ... cf plot2D in matlab help
 end
 

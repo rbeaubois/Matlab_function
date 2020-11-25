@@ -17,7 +17,7 @@
     [bin_fpath, nb_binf] = get_bin_files(binf_get_type);
 
 %% Analysis from binary files
-    trace_time      = 1;    % seconds
+    trace_time      = 60;    % seconds
     save_path       = uigetdir(pwd,'Select saving folder');
     save_data       = false;
     save_fig        = false;

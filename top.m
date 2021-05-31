@@ -16,7 +16,6 @@
     f_type          = 'mat';
     f_get_type      = 'one';
     prev_path       = pwd();
-%     cd('/run/media/rbeaubois/JUZO/Work/PHD/mat/');
     [fpath, nb_f]   = get_files(f_get_type, f_type);
 
 %% Analysis from binary files

@@ -53,8 +53,8 @@
 
         % Filter signal
             [LP_Signal_fix, HP_Signal_fix, time_ms]     = filter_signal(rec_param.fs, rec_param.nb_chan, Signal);
-
-        % Analysis ------------------------------------------------------------------------------------------------------------------------------------------
+    
+%% Analysis
 
         % Spike detection
             visual_on=0;
@@ -95,33 +95,38 @@
             [x, y]=plotSpikeRaster(A);
             plot(x, y, '.');
   
-    end
-    
-        %% Save    
-        if save_param.fig
-            fig_path = sprintf("%s%s%s.fig", save_param.path, filesep, fname_no_ext);
-            savefig(fig1,fig_path);
-            jpg_path = sprintf("%s%s%s.jpg", save_param.path, filesep, fname_no_ext);
-            saveas(fig1,jpg_path);
-            close(fig1)
+            %% Save    
+            if save_param.fig
+                fig_path = sprintf("%s%s%s.fig", save_param.path, filesep, fname_no_ext);
+                savefig(fig1,fig_path);
+                jpg_path = sprintf("%s%s%s.jpg", save_param.path, filesep, fname_no_ext);
+                saveas(fig1,jpg_path);
+                close(fig1)
+            end
+
+        %% Plots
+        fig_title = sprintf("Electrodes recording : %s", fname_no_ext);
+        figure('Name', fig_title, 'NumberTitle','off');
+        sgtitle(fig_title)
+        for i = 1 : rec_param.nb_chan
+            subplot(8, (round(rec_param.nb_chan/8)+1), i)
+            plot(Signal(:,1)*1e-3, HP_Signal_fix(:,i));
+            title(sscanf(rec_param.active_chan(i), "El_%d"))
+            xlabel('Time (s)')
+            ylabel('Amp (µV)')
+            ylim([-50 50])
+            xlim([0 Signal(end,1)*1e-3])
         end
 
-%% Plots
-    fig_title = sprintf("Electrodes recording : %s", fname_no_ext);
-    figure('Name', fig_title, 'NumberTitle','off');
-    sgtitle(fig_title)
-    for i = 1 : rec_param.nb_chan
-        subplot(8, (round(rec_param.nb_chan/8)+1), i)
-        plot(Signal(:,1)*1e-3, LP_Signal_fix(:,i));
+        %%
+        i = 30;
+        fig_title = sprintf("Signle electrode : %s", fname_no_ext);
+        figure('Name', fig_title, 'NumberTitle','off');
+        plot(Signal(:,1)*1e-3, HP_Signal_fix(:,i));
         title(sscanf(rec_param.active_chan(i), "El_%d"))
         xlabel('Time (s)')
-        ylabel('Amp (mV)')
+        ylabel('Amp (µV)')
+        ylim([-50 50])
+        xlim([0 Signal(end,1)*1e-3])
+    
     end
-
-    i = 5;
-    fig_title = sprintf("Signle electrode : %s", fname_no_ext);
-    figure('Name', fig_title, 'NumberTitle','off');
-    plot(Signal(:,1)*1e-3, LP_Signal_fix(:,i));
-    title(sscanf(rec_param.active_chan(i), "El_%d"))
-    xlabel('Time (s)')
-    ylabel('Amp (mV)')
